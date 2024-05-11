@@ -1,6 +1,4 @@
 from pydantic import BaseModel
-from datetime import datetime
-from typing import Optional
 
 
 class PatientSchema(BaseModel):
@@ -10,4 +8,3 @@ class PatientSchema(BaseModel):
     gender: str
     phoneNumber: str
     address: str
-    appointment: Optional[datetime] = None
