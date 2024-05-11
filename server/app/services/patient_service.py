@@ -53,39 +53,23 @@ class PatientService:
                 status_code=status.HTTP_400_BAD_REQUEST, detail=e.args[0]
             )
 
-    def get_patient_detail(patient_detail, db):
+    def get_patient_detail(id, db):
         try:
-            patient = db.query(Patient).all()
+            patient_detail = db.query(Patient).filter_by(patientId=id).first()
 
             # Check if any patient found
-            if patient:
+            if not patient_detail:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Patient already exist with the given emailId",
+                    detail="Patient doest not exist",
                 )
             else:
-                # Dump assets data into a dictionary
-                # item_dict = patient_detail.model_dump()
-
-                # patient_details_model = Patient(**item_dict)
-                patient_details_model = Patient(
-                    firstName=patient_detail.firstName,
-                    lastName=patient_detail.lastName,
-                    email=patient_detail.email,
-                    gender=patient_detail.gender,
-                    phoneNumber=patient_detail.phoneNumber,
-                    address=patient_detail.address,
+                return ResponseSchema(
+                    status=200,
+                    message="Patient detail fetched successfully!",
+                    success=True,
+                    data=patient_detail.dict(),
                 )
-
-                db.add(patient_details_model)
-                db.commit()
-
-            return ResponseSchema(
-                status=200,
-                message="Patient added successfully!",
-                success=True,
-                data=patient_detail.dict(),
-            )
         except SQLAlchemyError as e:
             db.rollback()
             raise HTTPException(
