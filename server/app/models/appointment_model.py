@@ -5,7 +5,7 @@ from app.utils.utility import to_dict
 
 
 class Appointment(Base):
-    __tablename__ = "Appointments"
+    __tablename__ = "Appointment"
 
     appointmentId = Column(Integer, primary_key=True, autoincrement=True)
     patientId = Column(Integer)

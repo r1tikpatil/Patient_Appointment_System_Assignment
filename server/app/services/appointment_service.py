@@ -7,10 +7,15 @@ from sqlalchemy.exc import SQLAlchemyError
 class AppointmentService:
     def get_all_appointment(patient_id, db):
         try:
+            all_appointments = (
+                db.query(Appointment).filter_by(patientId=patient_id).all()
+            )
+            data = [appointment.dict() for appointment in all_appointments]
             return ResponseSchema(
                 status=200,
                 message="Appointments fetched successfully!",
                 success=True,
+                data=data,
             )
         except SQLAlchemyError as e:
             db.rollback()
