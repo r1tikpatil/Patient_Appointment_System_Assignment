@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import patient_router
-
+from app.routers import patient_router, appointment_router
 
 app = FastAPI()
 
@@ -23,4 +22,9 @@ def health_check():
 
 
 # initialize patient router
-app.include_router(patient_router.router, prefix="", tags=["Patient"])
+app.include_router(patient_router.router, prefix="/patient", tags=["Patient"])
+
+# initialize appointment router
+app.include_router(
+    appointment_router.router, prefix="/appointment", tags=["Appointment"]
+)
