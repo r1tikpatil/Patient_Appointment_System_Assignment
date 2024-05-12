@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getPatientsDetail } from "../../APIs/patientApis";
 import { getAppointments } from "../../APIs/appointmentApis";
 import { formatDateTime } from "../../utils/helperFunctions";
+import PaymentModel from "../../common/components/paymentModal.component";
 
 const PatientDetail = () => {
   const params = useParams();
@@ -11,6 +12,19 @@ const PatientDetail = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [appointments, setAppointment] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [amount, setAmount] = useState(0);
+
+  const openModal = (isPaid, amount) => {
+    if (!isPaid) {
+      setAmount(amount);
+      setIsModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleFetchInfo = async () => {
     setLoading(true);
@@ -69,35 +83,41 @@ const PatientDetail = () => {
               <span className="font-bold">Email: </span>
               {data.email}
             </div>
+            {isModalOpen && (
+              <PaymentModel closeModal={closeModal} amount={amount} />
+            )}
             <div>
               <div className="text-xl font-bold mb-2">Appointments:</div>
               <ul className="divide-y divide-gray-200">
-                {appointments.map((appointment) => (
-                  <li key={appointment.appointmentId} className="py-2">
-                    <div className="flex justify-between items-center">
-                      <div className="flex flex-col justify-between items-center py-2">
-                        <div className="text-lg font-semibold">
-                          {formatDateTime(appointment.date)}
+                {appointments.map((appointment) => {
+                  const { amount, date } = appointment;
+                  const isPaid = appointment.isPaid == "1";
+                  return (
+                    <li key={appointment.appointmentId} className="py-2">
+                      <div className="flex justify-between items-center">
+                        <div className="flex flex-col justify-between items-center py-2">
+                          <div className="text-lg font-semibold">
+                            {formatDateTime(date)}
+                          </div>
+                          <div className="text-lg">amount : {amount}</div>
                         </div>
-                        <div className="text-lg">
-                          amount : {appointment.amount}
-                        </div>
-                      </div>
 
-                      <div>
-                        <span
-                          className={
-                            appointment.isPaid == "0"
-                              ? "text-red-500"
-                              : "text-green-500"
-                          }
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => openModal(isPaid, amount)}
                         >
-                          {appointment.isPaid == "0" ? "Pay" : "Paid"}
-                        </span>
+                          <span
+                            className={
+                              !isPaid ? "text-red-500" : "text-green-500"
+                            }
+                          >
+                            {!isPaid ? "Pay" : "Paid"}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

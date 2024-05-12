@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "./components/Dashboard/dashboard.component";
 import AddAppointment from "./components/AddAppointment/addAppointment.component";
 import PatientDetail from "./components/PatientDetail/patientDetail.component";
-import Error from "./common/components/Error/error.component";
+import Error from "./common/components/ErrorScreen/error.component";
 
 const App = () => {
   return (
