@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { getAllPatients } from "../../APIs/patientApis";
 import AddPatientModal from "../../common/components/addPatientModal.component";
+import Loader from "../../common/components/LoaderComponent/loader.component";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -26,7 +27,9 @@ const Dashboard = () => {
     } catch (err) {
       console.log(err);
     }
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const Dashboard = () => {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <div className="mx-20 max-w-[80%]">
+      <div className="mx-20 min-w-[50%] max-w-[80%]">
         <div className=" my-4 flex justify-between">
           <span className="text-2xl">Patient List</span>
           <button
@@ -129,7 +132,7 @@ const Dashboard = () => {
             </table>
           </div>
         ) : (
-          <>loading...</>
+          <Loader />
         )}
       </div>
     </div>

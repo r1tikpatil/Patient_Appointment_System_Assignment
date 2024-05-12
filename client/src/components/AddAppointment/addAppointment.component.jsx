@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { addAppointment } from "../../APIs/appointmentApis";
 import { currentTime } from "../../utils/helperFunctions";
 
 const AddAppointment = () => {
   const params = useParams();
+  const navigation = useNavigate();
+
   const patientId = params.id;
 
   const [dateTime, setDateTime] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState();
 
   useEffect(() => {
     const time = currentTime();
@@ -35,6 +37,9 @@ const AddAppointment = () => {
       if (res.success) {
         setDateTime("");
         setAmount(0);
+        setTimeout(() => {
+          navigation("/");
+        }, 1000);
       }
     } catch (err) {
       console.log(err);
@@ -62,6 +67,7 @@ const AddAppointment = () => {
           id="amount"
           type="number"
           value={amount}
+          placeholder="0"
           onChange={handleAmountChange}
           className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-400"
         />
