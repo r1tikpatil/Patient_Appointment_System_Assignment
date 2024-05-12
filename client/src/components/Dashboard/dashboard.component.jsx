@@ -26,6 +26,10 @@ const Dashboard = () => {
     navigate(`/detail/${id}`);
   };
 
+  const handleAddAppointment = (id) => {
+    navigate(`/addAppointment/${id}`);
+  };
+
   return (
     <div className="mx-auto max-w-4xl">
       <div className="text-2xl mb-4">Patient List</div>
@@ -59,17 +63,15 @@ const Dashboard = () => {
                   Address
                 </th>
                 <th scope="col" className="relative px-6 py-3">
-                  <span className="sr-only">Action</span>
+                  <span className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Action
+                  </span>
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {allPatientsList.map((patient) => (
-                <tr
-                  onClick={() => handleClick(patient.patientId)}
-                  className="cursor-pointer"
-                  key={patient.patientId}
-                >
+                <tr key={patient.patientId}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="ml-4">
@@ -91,8 +93,17 @@ const Dashboard = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button className="text-indigo-600 hover:text-indigo-900">
+                    <button
+                      onClick={() => handleAddAppointment(patient.patientId)}
+                      className="text-indigo-600 hover:text-indigo-900"
+                    >
                       Add Appointment
+                    </button>
+                    <button
+                      onClick={() => handleClick(patient.patientId)}
+                      className="text-indigo-600 hover:text-indigo-900 ml-2"
+                    >
+                      View details
                     </button>
                   </td>
                 </tr>
