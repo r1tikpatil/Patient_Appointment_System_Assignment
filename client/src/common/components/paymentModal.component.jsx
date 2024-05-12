@@ -12,9 +12,7 @@ const PaymentModel = ({ closeModal, amount }) => {
   const modalRef = useRef(null);
 
   const makePayment = async () => {
-    const stripePromise = await loadStripe(
-      "pk_test_51MdeL6SAWSj5MrHDrb8vL2cZ5JiTG9PVoq8i0j3lxmX6cIBh5dHuNQhikVrWY0DA1v3jq2zcs7pgEnYlZqZS1anX0042vCvUNK"
-    );
+    const stripePromise = await loadStripe(process.env.STRIPE_SECRET_KEY);
 
     const res = await checkoutSession({ amount });
 
