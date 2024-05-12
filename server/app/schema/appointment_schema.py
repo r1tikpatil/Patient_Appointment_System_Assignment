@@ -10,3 +10,4 @@ class AppointmentSchema(BaseModel):
 
 class CreateCheckoutSessionSchema(BaseModel):
     amount: int
+    appointment_id: int

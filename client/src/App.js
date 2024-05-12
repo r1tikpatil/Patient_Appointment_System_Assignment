@@ -16,7 +16,7 @@ const App = () => {
       <Route path="/addAppointment/:id" element={<AddAppointment />} />
       <Route path="/detail/:id" element={<PatientDetail />} />
       <Route path="/fail-payment" element={<PaymentFailed />} />
-      <Route path="/success-payment" element={<PaymentSuccess />} />
+      <Route path="/success-payment/:id" element={<PaymentSuccess />} />
       <Route path="*" element={<Error />} />
     </Routes>
   );

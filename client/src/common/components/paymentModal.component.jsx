@@ -1,6 +1,9 @@
 import React, { useRef } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { checkoutSession } from "../../APIs/appointmentApis";
+import {
+  checkoutSession,
+  updatePaymentStatus,
+} from "../../APIs/appointmentApis";
 
 const modalStyles = {
   bg: "absolute inset-0 bg-black opacity-50",
@@ -8,15 +11,18 @@ const modalStyles = {
     "relative flex flex-col justify-center items-center bg-white p-4 shadow-lg h-80 w-80 rounded-xl",
 };
 
-const PaymentModel = ({ closeModal, amount }) => {
+const PaymentModel = ({ closeModal, amount, appointmentId }) => {
   const modalRef = useRef(null);
 
   const makePayment = async () => {
     const stripePromise = await loadStripe(
       process.env.REACT_APP_STRIPE_SECRET_KEY
     );
-
-    const res = await checkoutSession({ amount });
+    const data = {
+      amount,
+      appointment_id: appointmentId,
+    };
+    const res = await checkoutSession(data);
 
     const result = stripePromise.redirectToCheckout({
       sessionId: res.data.session_id,

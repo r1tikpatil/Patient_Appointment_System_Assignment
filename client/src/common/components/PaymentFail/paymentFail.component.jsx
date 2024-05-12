@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const PaymentFailed = () => {
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
+  }, []);
+
   return (
     <div className="max-w-lg mx-auto mt-10 bg-white shadow-md rounded px-8 py-6">
       <h2 className="text-2xl font-bold text-red-600 mb-4">Payment Failed</h2>

@@ -14,11 +14,13 @@ const PatientDetail = () => {
   const [appointments, setAppointment] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [amount, setAmount] = useState(0);
+  const [appointmentId, setAppointmentId] = useState(null);
 
-  const openModal = (isPaid, amount) => {
+  const openModal = (isPaid, amount, id) => {
     if (!isPaid) {
       setAmount(amount);
       setIsModalOpen(true);
+      setAppointmentId(id);
     }
   };
 
@@ -84,13 +86,17 @@ const PatientDetail = () => {
               {data.email}
             </div>
             {isModalOpen && (
-              <PaymentModel closeModal={closeModal} amount={amount} />
+              <PaymentModel
+                closeModal={closeModal}
+                amount={amount}
+                appointmentId={appointmentId}
+              />
             )}
             <div>
               <div className="text-xl font-bold mb-2">Appointments:</div>
               <ul className="divide-y divide-gray-200">
                 {appointments.map((appointment) => {
-                  const { amount, date } = appointment;
+                  const { appointmentId, amount, date } = appointment;
                   const isPaid = appointment.isPaid == "1";
                   return (
                     <li key={appointment.appointmentId} className="py-2">
@@ -103,8 +109,10 @@ const PatientDetail = () => {
                         </div>
 
                         <div
-                          className="cursor-pointer"
-                          onClick={() => openModal(isPaid, amount)}
+                          className={!isPaid ? "cursor-pointer" : ""}
+                          onClick={() =>
+                            openModal(isPaid, amount, appointmentId)
+                          }
                         >
                           <span
                             className={

@@ -80,7 +80,7 @@ class AppointmentService:
                     },
                 ],
                 mode="payment",
-                success_url="http://localhost:3000/success-payment",
+                success_url=f"http://localhost:3000/success-payment/{checkout_session_detail.appointment_id}",
                 cancel_url="http://localhost:3000/fail-payment",
             )
             return ResponseSchema(
