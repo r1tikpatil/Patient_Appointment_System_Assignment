@@ -22,3 +22,8 @@ async def create_appointment(
 @router.post("/make_payment")
 async def make_payment(checkout_session_detail: CreateCheckoutSessionSchema):
     return AppointmentService.make_payment(checkout_session_detail)
+
+
+@router.put("/payment_status/{appointment_id}")
+async def update_payment_status(appointment_id: int, db: Session = Depends(get_db)):
+    return AppointmentService.update_payment_status(appointment_id, db)

@@ -93,3 +93,26 @@ class AppointmentService:
             raise HTTPException(status_code=e.http_status, detail=str(e))
         except stripe.error.StripeError as e:
             raise HTTPException(status_code=e.http_status, detail=e._message)
+
+    def update_payment_status(appointment_id, db):
+        try:
+            appointment = (
+                db.query(Appointment).filter_by(appointmentId=appointment_id).first()
+            )
+            if not appointment:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="No appointment exist",
+                )
+            appointment.isPaid = True
+            db.commit()
+            return ResponseSchema(
+                status=200,
+                message="Payment status updated successfully!",
+                success=True,
+            )
+        except SQLAlchemyError as e:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=e.args[0]
+            )
