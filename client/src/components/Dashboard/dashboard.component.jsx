@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getAllPatients } from "../../APIs/patientApis";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [allPatientsList, setAllPatientsList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -19,6 +21,10 @@ const Dashboard = () => {
   useEffect(() => {
     fetchAllPatients();
   }, []);
+
+  const handleClick = (id) => {
+    navigate(`/detail/${id}`);
+  };
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -59,7 +65,11 @@ const Dashboard = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {allPatientsList.map((patient) => (
-                <tr key={patient.patientId}>
+                <tr
+                  onClick={() => handleClick(patient.patientId)}
+                  className="cursor-pointer"
+                  key={patient.patientId}
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="ml-4">
