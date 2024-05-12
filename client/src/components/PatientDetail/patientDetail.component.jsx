@@ -39,9 +39,7 @@ const PatientDetail = () => {
     } catch (e) {
       console.log(e);
     }
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    setLoading(false);
   };
 
   const handleFetchAppointment = async () => {
@@ -96,34 +94,40 @@ const PatientDetail = () => {
               />
             )}
             {appointments.length !== 0 ? (
-              <div>
-                <div className="text-xl font-bold mb-2">Appointments:</div>
-                <ul className="divide-y divide-gray-200">
+              <div className="bg-gray-100 p-4 rounded-lg shadow-lg">
+                <div className="text-xl font-bold mb-4 text-gray-800">
+                  Appointments:
+                </div>
+                <ul className="divide-y divide-gray-300">
                   {appointments.map((appointment) => {
                     const { appointmentId, amount, date } = appointment;
                     const isPaid = appointment.isPaid == "1";
                     return (
-                      <li key={appointment.appointmentId} className="py-2">
+                      <li key={appointment.appointmentId} className="py-4">
                         <div className="flex justify-between items-center">
-                          <div className="flex flex-col justify-between items-center py-2">
-                            <div className="text-lg font-semibold">
-                              {formatDateTime(date)}
+                          <div className="flex flex-col justify-between items-start">
+                            <div className="text-lg font-semibold text-gray-700">
+                              Time: {formatDateTime(date)}
                             </div>
-                            <div className="text-lg">amount : {amount}</div>
+                            <div className="text-lg text-gray-600">
+                              Amount: ${amount}
+                            </div>
                           </div>
 
                           <div
-                            className={!isPaid ? "cursor-pointer" : ""}
+                            className={`${
+                              !isPaid && "cursor-pointer"
+                            } px-4 py-2 rounded ${
+                              isPaid
+                                ? "bg-green-500 hover:bg-green-600"
+                                : "bg-red-500 hover:bg-red-600"
+                            }`}
                             onClick={() =>
                               openModal(isPaid, amount, appointmentId)
                             }
                           >
-                            <span
-                              className={
-                                !isPaid ? "text-red-500" : "text-green-500"
-                              }
-                            >
-                              {!isPaid ? "Pay" : "Paid"}
+                            <span className="text-white">
+                              {isPaid ? "Paid" : "Pay Now"}
                             </span>
                           </div>
                         </div>

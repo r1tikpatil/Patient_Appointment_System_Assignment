@@ -27,9 +27,7 @@ const Dashboard = () => {
     } catch (err) {
       console.log(err);
     }
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    setLoading(false);
   };
 
   useEffect(() => {
