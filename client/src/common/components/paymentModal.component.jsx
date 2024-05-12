@@ -1,12 +1,27 @@
 import React, { useRef } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { checkoutSession } from "../../APIs/appointmentApis";
+
+const modalStyles = {
+  bg: "absolute inset-0 bg-black opacity-50",
+  content:
+    "relative flex flex-col justify-center items-center bg-white p-4 shadow-lg h-80 w-80 rounded-xl",
+};
 
 const PaymentModel = ({ closeModal, amount }) => {
-  const modalStyles = {
-    bg: "absolute inset-0 bg-black opacity-50",
-    content:
-      "relative flex flex-col justify-center items-center bg-white p-4 shadow-lg h-80 w-80 rounded-xl",
-  };
   const modalRef = useRef(null);
+
+  const makePayment = async () => {
+    const stripePromise = await loadStripe(
+      "pk_test_51MdeL6SAWSj5MrHDrb8vL2cZ5JiTG9PVoq8i0j3lxmX6cIBh5dHuNQhikVrWY0DA1v3jq2zcs7pgEnYlZqZS1anX0042vCvUNK"
+    );
+
+    const res = await checkoutSession({ amount });
+
+    const result = stripePromise.redirectToCheckout({
+      sessionId: res.data.session_id,
+    });
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 ">
@@ -21,7 +36,7 @@ const PaymentModel = ({ closeModal, amount }) => {
         </label>
         <button
           className="bg-pink-500 hover:bg-pink-700 w-max text-white font-bold py-2 px-4 rounded shadow mt-2"
-          //   onClick={handlePaymentSubmit}
+          onClick={makePayment}
         >
           Do Repay
         </button>

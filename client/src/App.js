@@ -5,6 +5,8 @@ import Dashboard from "./components/Dashboard/dashboard.component";
 import AddAppointment from "./components/AddAppointment/addAppointment.component";
 import PatientDetail from "./components/PatientDetail/patientDetail.component";
 import Error from "./common/components/ErrorScreen/error.component";
+import PaymentFailed from "./common/components/PaymentFail/paymentFail.component";
+import PaymentSuccess from "./common/components/PaymentSuccess/paymentSuccess.component";
 
 const App = () => {
   return (
@@ -13,6 +15,8 @@ const App = () => {
 
       <Route path="/addAppointment/:id" element={<AddAppointment />} />
       <Route path="/detail/:id" element={<PatientDetail />} />
+      <Route path="/fail-payment" element={<PaymentFailed />} />
+      <Route path="/success-payment" element={<PaymentSuccess />} />
       <Route path="*" element={<Error />} />
     </Routes>
   );

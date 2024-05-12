@@ -47,7 +47,7 @@ const Dashboard = () => {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <div className="mx-20 max-w-[50%]">
+      <div className="mx-20 max-w-[80%]">
         <div className=" my-4 flex justify-between">
           <span className="text-2xl">Patient List</span>
           <button
