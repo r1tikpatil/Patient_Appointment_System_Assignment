@@ -6,3 +6,7 @@ class AppointmentSchema(BaseModel):
     patientId: int
     date: datetime
     amount: int
+
+
+class CreateCheckoutSessionSchema(BaseModel):
+    amount: int

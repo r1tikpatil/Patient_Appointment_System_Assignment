@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     pydantic to load a .env file."""
 
     DB_URI: str
+    STRIPE_SECRET_KEY: str
 
     class Config:
         env_file = ".env"

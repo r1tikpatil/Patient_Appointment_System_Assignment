@@ -3,6 +3,10 @@ from app.models.appointment_model import Appointment
 from app.models.patient_model import Patient
 from app.schema.response_schema import ResponseSchema
 from sqlalchemy.exc import SQLAlchemyError
+from app.config.env import env
+import stripe
+
+stripe.api_key = env.STRIPE_SECRET_KEY
 
 
 class AppointmentService:
@@ -58,3 +62,34 @@ class AppointmentService:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail=e.args[0]
             )
+
+    def make_payment(checkout_session_detail):
+        try:
+            session = stripe.checkout.Session.create(
+                payment_method_types=["card"],
+                line_items=[
+                    {
+                        "price_data": {
+                            "currency": "inr",
+                            "product_data": {
+                                "name": "Patient Appointment System",
+                            },
+                            "unit_amount": checkout_session_detail.amount * 100,
+                        },
+                        "quantity": 1,
+                    },
+                ],
+                mode="payment",
+                success_url="http://localhost:3000/success-payment",
+                cancel_url="http://localhost:3000/fail-payment",
+            )
+            return ResponseSchema(
+                status=200,
+                success=True,
+                message="success",
+                data={"session_id": session.id},
+            )
+        except stripe.error.CardError as e:
+            raise HTTPException(status_code=e.http_status, detail=str(e))
+        except stripe.error.StripeError as e:
+            raise HTTPException(status_code=e.http_status, detail=e._message)
